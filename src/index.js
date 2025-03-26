@@ -21,7 +21,9 @@ function refreshWeather(response) {
   humidityElement.innerHTML = `${response.data.temperature.humidity}%`;
   windSpeedElement.innerHTML = `${response.data.wind.speed}km/h`;
   temperatureElement.innerHTML = Math.round(temperature);
-  console.log(response.data);
+  getForecast(response.data.city);
+
+  //console.log(response.data);
 }
 
 function formatDate(date) {
@@ -58,7 +60,14 @@ function handelSearchSubmit(event) {
   searchCity(searchInput.value);
 }
 
-function displayForecast() {
+function getForecast(city) {
+  let apiKey = "f05a484ed430ce4d21tad607a48ebo0f";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayForecast);
+}
+
+function displayForecast(response) {
+  console.log(response.data);
   let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
   let forecastHtml = "  ";
 
@@ -83,4 +92,4 @@ function displayForecast() {
 let searchFormElement = document.querySelector("#search-form-id");
 searchFormElement.addEventListener("submit", handelSearchSubmit);
 searchCity("Mashhad");
-displayForecast();
+getForecast("Mashhad");
